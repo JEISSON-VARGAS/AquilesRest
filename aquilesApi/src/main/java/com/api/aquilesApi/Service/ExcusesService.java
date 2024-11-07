@@ -48,4 +48,8 @@ public class ExcusesService implements Idao<ExcusesEntity , Long> {
     public void create(ExcusesEntity entity) {
         this.excusesRepository.save(entity);
     }
+
+    public boolean existsByExcuseDocument(String excuseDocument) {
+        return excusesRepository.existsByExcuseDocument(excuseDocument);
+    }
 }

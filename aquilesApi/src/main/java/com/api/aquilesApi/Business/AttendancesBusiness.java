@@ -72,6 +72,8 @@ public class AttendancesBusiness {
         }
     }
 
+    // Find All
+
     public Page<AttendancesDto> findAll(int page, int size) {
         try {
             PageRequest pageRequest = PageRequest.of(page, size);
@@ -89,7 +91,7 @@ public class AttendancesBusiness {
         }
     }
 
-
+    // Find By Id
     public AttendancesDto findById(Long id) {
         try {
             AttendancesEntity attendances = attendancesService.getById(id);
@@ -101,6 +103,7 @@ public class AttendancesBusiness {
         }
     }
 
+    // Add
     public void add(Map<String, Object> json) {
         try {
             AttendancesDto attendancesDto = new AttendancesDto();
@@ -127,6 +130,7 @@ public class AttendancesBusiness {
         }
     }
 
+    // update
     public void update(Long attendanceId, Map<String, Object> json) {
         try {
             var attendanceDto = modelMapper.map(attendancesService.getById(attendanceId), AttendancesDto.class);
@@ -139,6 +143,7 @@ public class AttendancesBusiness {
         }
     }
 
+    // delete
     public void delete(Long attendanceId) {
         try {
             AttendancesEntity attendances = attendancesService.getById(attendanceId);

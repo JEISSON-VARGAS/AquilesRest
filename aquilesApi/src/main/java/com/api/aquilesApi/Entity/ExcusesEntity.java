@@ -18,13 +18,13 @@ public class ExcusesEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "excuse_id", nullable = false)
-    private Long excuse_id;
+    private Long excuseId;
 
     @Column(name = "excuse_description", nullable = false, length = 100)
-    private String excuse_description;
+    private String excuseDescription;
 
     @Column(name = "excuse_document", nullable = false, length = 100)
-    private String excuse_document;
+    private String excuseDocument;
 
     // Aquí el mappedBy debe hacer referencia a la propiedad "excuse" de AttendancesEntity
     @OneToMany(mappedBy = "excuse", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
