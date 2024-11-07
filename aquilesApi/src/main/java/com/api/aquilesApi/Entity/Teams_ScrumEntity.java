@@ -26,6 +26,6 @@ public class Teams_ScrumEntity implements Serializable {
     @OneToMany(mappedBy = "fk_team_scrum_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Mapea esta propiedad a una relación uno a muchos con la entidad Students
     private List<StudentsEntity> studentList; // Lista de estudiantes asociados a este equipo scrum
 
-    @OneToMany(mappedBy = "fk_team_scrum_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Mapea esta propiedad a una relación uno a muchos con la entidad Project
+    @OneToMany(mappedBy = "fk_team_scrum_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ProjectEntity> projectList; // Lista de proyectos asociados a este equipo scrum
 }

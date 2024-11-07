@@ -1,5 +1,6 @@
 package com.api.aquilesApi.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,8 @@ public class ProjectEntity implements Serializable {
     @Column(name = "objectives", nullable = false, length = 255)
     private String objectives;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_team_scrum_id", nullable = false)
     private Teams_ScrumEntity fk_team_scrum_id;
 

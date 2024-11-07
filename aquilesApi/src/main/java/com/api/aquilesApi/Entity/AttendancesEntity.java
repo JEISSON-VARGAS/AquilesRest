@@ -25,7 +25,7 @@ public class AttendancesEntity implements Serializable {
 
     @Timestamp
     @Column(name = "attendance_date", nullable = false)
-    private LocalDate attendanceDate;
+    private Date attendanceDate;
     //
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_idExcuse", referencedColumnName = "excuse_id")
