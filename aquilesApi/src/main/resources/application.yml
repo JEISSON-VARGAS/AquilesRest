@@ -1,24 +1,27 @@
 server:
-  port: 8083  # Cambia 8081 por el puerto que prefieras
+  port: 8080  # Cambia 8081 por el puerto que prefieras
+
 spring:
   application:
-    name: DBAquiles
+    name: DBAquilesRest
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/DBAquilesA
+    url: jdbc:postgresql://localhost:5432/DBAquilesRest
     username: postgres
-    password: "jhors"
+    password: "jhors345"
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
+
       #ddl-auto: create-drop
       ddl-auto: update
+      #ddl-auto: drop
 
-    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
 
   mail:
     host: smtp.gmail.com
@@ -31,6 +34,7 @@ spring:
           auth: true
           starttls:
             enable: true
+
 
   main:
     allow-circular-references: true

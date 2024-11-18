@@ -1,8 +1,7 @@
 package com.api.aquilesApi.Business;
 
 import com.api.aquilesApi.Dto.DiarySustainationsDto;
-import com.api.aquilesApi.Entity.DiarySustainationsEntity;
-import com.api.aquilesApi.Entity.JuriesEntity;
+import com.api.aquilesApi.Entity.DiarySustainations;
 import com.api.aquilesApi.Service.DiarySustainationsService;
 import com.api.aquilesApi.Service.JuriesService;
 import com.api.aquilesApi.Utilities.CustomException;
@@ -16,13 +15,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -68,7 +65,7 @@ public class DiarySustainationsBusiness {
     public Page<DiarySustainationsDto> findAll(int page , int size){
         try {
             PageRequest pageRequest = PageRequest.of(page, size);
-            Page<DiarySustainationsEntity> diarySustainationsEntityPage = diarySustainationsService.findAll(pageRequest);
+            Page<DiarySustainations> diarySustainationsEntityPage = diarySustainationsService.findAll(pageRequest);
 
             List<DiarySustainationsDto> sustainationsDtoList = diarySustainationsEntityPage.getContent()
                     .stream()
@@ -79,16 +76,16 @@ public class DiarySustainationsBusiness {
         } catch (Exception e){
             throw new CustomException("Error Retrieving Substantiations : " + e.getMessage() , HttpStatus.INTERNAL_SERVER_ERROR );
         }
-     }
+    }
 
-     // Find By id
+    // Find By id
     public DiarySustainationsDto findById(Long id){
         try {
-            DiarySustainationsEntity diarySustainations = diarySustainationsService.getById(id);
-                // Configurar El Mapeo Manualmente Si Es Necesario
-                modelMapper.typeMap(DiarySustainationsEntity.class , DiarySustainationsDto.class)
-                        .addMapping(DiarySustainationsEntity::getDiaryId , DiarySustainationsDto::setDiaryId);
-                return modelMapper.map(diarySustainations , DiarySustainationsDto.class);
+            DiarySustainations diarySustainations = diarySustainationsService.getById(id);
+            // Configurar El Mapeo Manualmente Si Es Necesario
+            modelMapper.typeMap(DiarySustainations.class , DiarySustainationsDto.class)
+                    .addMapping(DiarySustainations::getDiaryId , DiarySustainationsDto::setDiaryId);
+            return modelMapper.map(diarySustainations , DiarySustainationsDto.class);
         } catch (CustomException e){
             throw e;
         } catch (Exception e){
@@ -104,9 +101,9 @@ public class DiarySustainationsBusiness {
             // Validar Y Asignar Datos del JSON Al DTO
             diarySustainationsDto = validationObject(json , diarySustainationsDto );
             // Convertir DTO a Entidad
-            DiarySustainationsEntity diarySustainationsEntity = modelMapper.map(diarySustainationsDto , DiarySustainationsEntity.class);
+            DiarySustainations diarySustainationsEntity = modelMapper.map(diarySustainationsDto , DiarySustainations.class);
             // Obtener La Entidad Del Diary Por Su ID
-            DiarySustainationsEntity diarySustainations = diarySustainationsService.getById(diarySustainationsDto.getDiaryId());
+            DiarySustainations diarySustainations = diarySustainationsService.getById(diarySustainationsDto.getDiaryId());
             // Guardar La Entidad De Diary
             diarySustainationsService.create(diarySustainations);
         }catch (CustomException e){
@@ -143,7 +140,7 @@ public class DiarySustainationsBusiness {
         } catch (Exception e) {
             throw new CustomException("Error Creating Project: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-    }
-         */
 
-}
+         */
+    }
+

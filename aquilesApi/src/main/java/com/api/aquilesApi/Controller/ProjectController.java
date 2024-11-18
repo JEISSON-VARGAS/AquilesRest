@@ -1,7 +1,8 @@
 package com.api.aquilesApi.Controller;
 
 import com.api.aquilesApi.Business.ProjectBusiness;
-import com.api.aquilesApi.Dto.ProjectDto;
+import com.api.aquilesApi.Dto.ProjectDTO;
+
 import com.api.aquilesApi.Utilities.CustomException;
 import com.api.aquilesApi.Utilities.Http.ResponseHttpApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ProjectController {
     public ResponseEntity<Map<String , Object>> findAll (@RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "10") int size){
         try {
-            Page<ProjectDto> projectDtoPage = projectBusiness.findAll(page , size);
+            Page<ProjectDTO> projectDtoPage = projectBusiness.findAll(page , size);
             if(!projectDtoPage.isEmpty()){
                 return new ResponseEntity<>(ResponseHttpApi.responseHttpFindAll(
                         projectDtoPage.getContent(),
@@ -56,7 +57,7 @@ public class ProjectController {
     @GetMapping("/find/{id}")
     public ResponseEntity<Map<String , Object>> findById(@PathVariable Long id){
         try {
-            ProjectDto projectDto = this.projectBusiness.findById(id);
+            ProjectDTO projectDto = this.projectBusiness.findById(id);
             return new ResponseEntity<>(ResponseHttpApi.responseHttpFindId(
                     projectDto,
                     ResponseHttpApi.CODE_OK,
