@@ -79,7 +79,7 @@ public class AttendanceService implements Idao<Attendance, Long> {
         }
 
         // Encuentra asistencias con estado "Ausente" y sin excusa
-        List<Attendance> absencesWithoutExcuse = attendanceRepository.findAbsentWithoutExcuse();
+        List<Attendance> absencesWithoutExcuse = attendanceRepository.findAbsentWithoutJustification();
 
         // Actualiza las asistencias al estado "Enviar Excusa"
         absencesWithoutExcuse.forEach(attendance -> attendance.setStateAttendance(pendingExcuseState));

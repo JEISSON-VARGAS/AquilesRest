@@ -1,4 +1,4 @@
-/* package com.api.aquilesApi.Entity;
+package com.api.aquilesApi.Entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,8 +12,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "justifications")
-public class JustificationEntity implements Serializable {
+@Table(name = "justification")
+public class Justification implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +26,7 @@ public class JustificationEntity implements Serializable {
     @Column(name = "justification_document", nullable = false, length = 100)
     private String justificationDocument;
 
-    // Relación OneToMany con AttendancesEntity (puedes modificar el mappedBy según lo necesites)
+    // Aquí el mappedBy debe hacer referencia a la propiedad "justification" de AttendancesEntity
     @OneToMany(mappedBy = "justification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<AttendancesEntity> attendanceSet;
-
-    // Puedes agregar otros campos si es necesario.
+    private Set<Attendance> attendanceSet;
 }
-*/

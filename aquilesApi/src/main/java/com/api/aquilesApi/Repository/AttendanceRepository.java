@@ -24,7 +24,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     boolean existsByAttendanceDateAndStateAttendance(Date attendanceDate, StateAttendance stateAttendance);
 
     // Obtén todas las asistencias ausentes sin excusa
-    @Query("SELECT a FROM Attendance a " +
-            "WHERE a.stateAttendance.status = 'Absent' AND a.excuse IS NULL")
-    List<Attendance> findAbsentWithoutExcuse();  // Aquí se usa List
+    @Query("SELECT a FROM Attendance a WHERE a.stateAttendance.status = 'Absent' AND a.justification IS NULL")
+    List<Attendance> findAbsentWithoutJustification();  // Aquí se usa List
 }

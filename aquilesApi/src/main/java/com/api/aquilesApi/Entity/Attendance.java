@@ -24,8 +24,8 @@ public class Attendance implements Serializable {
     private Date attendanceDate;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_idExcuse", referencedColumnName = "excuse_id")
-    private Excuse excuse;
+    @JoinColumn(name = "fk_idJustification", referencedColumnName = "justification_id")
+    private Justification justification;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_trainer_id", referencedColumnName = "trainer_id")
@@ -41,7 +41,7 @@ public class Attendance implements Serializable {
 
     // Sincronización con estado de excusa
     public void syncExcuseState(StateAttendance pendingExcuseState) {
-        if ("Absent".equals(this.stateAttendance.getStatus()) && this.excuse == null) {
+        if ("Absent".equals(this.stateAttendance.getStatus()) && this.justification == null) {
             this.stateAttendance = pendingExcuseState;
         }
     }

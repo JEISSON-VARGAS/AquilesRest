@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExcuseDTO {
-    private Long excuseId;
-    private String excuseDescription;
-    private String excuseDocument;
+public class JustificationDTO {
+    private Long justificationId;
+    private String justificationDescription;
+    private String justificationDocument;
 }

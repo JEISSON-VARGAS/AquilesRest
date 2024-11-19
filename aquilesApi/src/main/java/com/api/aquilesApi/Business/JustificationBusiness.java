@@ -1,10 +1,9 @@
-/*
 package com.api.aquilesApi.Business;
 
-import com.api.aquilesApi.Dto.AttendancesDto;
-import com.api.aquilesApi.Dto.JustificationDto;
-import com.api.aquilesApi.Entity.AttendancesEntity;
-import com.api.aquilesApi.Entity.JustificationEntity;
+import com.api.aquilesApi.Dto.AttendanceDTO;
+import com.api.aquilesApi.Dto.JustificationDTO;
+import com.api.aquilesApi.Entity.Attendance;
+import com.api.aquilesApi.Entity.Justification;
 import com.api.aquilesApi.Service.JustificationService;
 import com.api.aquilesApi.Utilities.CustomException;
 import com.api.aquilesApi.Utilities.Util;
@@ -21,6 +20,7 @@ import java.util.Map;
 
 @Component
 public class JustificationBusiness {
+
     @Autowired
     private JustificationService justificationService;
 
@@ -30,7 +30,7 @@ public class JustificationBusiness {
     private final ModelMapper modelMapper = new ModelMapper();
 
     // Validación de Objeto
-    private JustificationDto validationObject(Map<String, Object> json, JustificationDto justificationDto) {
+    private JustificationDTO validationObject(Map<String, Object> json, JustificationDTO justificationDto) {
         JSONObject dataObject = util.getData(json);
 
         if (dataObject.has("justificationId")) {
@@ -59,11 +59,11 @@ public class JustificationBusiness {
     }
 
     // Find All
-    public Page<JustificationDto> findAll(int page, int size) {
+    public Page<JustificationDTO> findAll(int page, int size) {
         try {
             PageRequest pageRequest = PageRequest.of(page, size);
-            Page<JustificationEntity> justificationEntityPage = justificationService.findAll(pageRequest);
-            return justificationEntityPage.map(entity -> modelMapper.map(entity, JustificationDto.class));
+            Page<Justification> justificationEntityPage = justificationService.findAll(pageRequest);
+            return justificationEntityPage.map(entity -> modelMapper.map(entity, JustificationDTO.class));
         } catch (DataAccessException e) {
             throw new CustomException("Error retrieving Justifications due to data access issues: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
@@ -72,10 +72,10 @@ public class JustificationBusiness {
     }
 
     // Find By Id
-    public JustificationDto findById(Long id) {
+    public JustificationDTO findById(Long id) {
         try {
-            JustificationEntity justification = justificationService.getById(id);
-            return modelMapper.map(justification, JustificationDto.class);
+            Justification justification = justificationService.getById(id);
+            return modelMapper.map(justification, JustificationDTO.class);
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
@@ -86,10 +86,9 @@ public class JustificationBusiness {
     // Add
     public void add(Map<String, Object> json) {
         try {
-            JustificationDto justificationDto = new JustificationDto();
+            JustificationDTO justificationDto = new JustificationDTO();
             justificationDto = validationObject(json, justificationDto);
-
-            JustificationEntity justificationEntity = modelMapper.map(justificationDto, JustificationEntity.class);
+            Justification justificationEntity = modelMapper.map(justificationDto, Justification.class);
             justificationService.save(justificationEntity);
         } catch (CustomException e) {
             throw e;
@@ -103,8 +102,8 @@ public class JustificationBusiness {
     // Update
     public void update(Long justificationId, Map<String, Object> json) {
         try {
-            var justificationDTO = modelMapper.map(justificationService.getById(justificationId), JustificationDto.class);
-            var justification = modelMapper.map(this.validationObject(json, justificationDTO), JustificationEntity.class);
+            var justificationDTO = modelMapper.map(justificationService.getById(justificationId), JustificationDTO.class);
+            var justification = modelMapper.map(this.validationObject(json, justificationDTO), Justification.class);
             justificationService.save(justification);
         } catch (CustomException e) {
             throw e;
@@ -116,7 +115,7 @@ public class JustificationBusiness {
     // Delete
     public void delete(Long justificationId) {
         try {
-            JustificationEntity justification = justificationService.getById(justificationId);
+            Justification justification = justificationService.getById(justificationId);
             justificationService.delete(justification);
         } catch (CustomException e) {
             throw e;
@@ -125,5 +124,3 @@ public class JustificationBusiness {
         }
     }
 }
-
- */
