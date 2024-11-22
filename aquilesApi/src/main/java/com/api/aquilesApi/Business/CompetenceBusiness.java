@@ -1,4 +1,4 @@
-package co.sena.edu.olympo_back.business;
+package com.api.aquilesApi.Business;
 
 import com.api.aquilesApi.Dto.CompetenceDTO;
 import com.api.aquilesApi.Dto.PhaseDTO;
