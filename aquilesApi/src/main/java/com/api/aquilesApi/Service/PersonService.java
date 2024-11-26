@@ -37,6 +37,11 @@ public class PersonService implements Idao<Person, Long> {
         this.save(person); // Usa save para manejar la creación
     }
 
+    @Override
+    public void saveAll(Iterable<Person> entities) {
+
+    }
+
     @Transactional
     @Override
     public void update(Person person) {

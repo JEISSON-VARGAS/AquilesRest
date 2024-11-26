@@ -76,4 +76,24 @@ public class LearningOutcomeService implements Idao<LearningOutcome, Long> {
         // Verifica si existe un LearningOutcome con la descripción dada
         return learningOutcomeRepository.existsByDescription(description);
     }
+
+    /**
+     * Cambiar el estado activo/inactivo de un Learning Outcome.
+     * @param id ID del Learning Outcome
+     * @return El nuevo estado
+     */
+    @Transactional
+    public Boolean toggle(Long id) {
+        // Obtiene el LearningOutcome
+        LearningOutcome learningOutcome = this.getById(id);
+
+        // Cambia el estado
+        learningOutcome.setState(!learningOutcome.getState());
+
+        // Guarda el cambio
+        learningOutcomeRepository.save(learningOutcome);
+
+        // Devuelve el nuevo estado
+        return learningOutcome.getState();
+    }
 }

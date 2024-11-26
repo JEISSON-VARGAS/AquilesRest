@@ -45,4 +45,9 @@ public class ProjectService implements Idao<Project , Long> {
     public void create(Project entity) {
         this.projectRepository.save(entity);
     }
+
+    @Override
+    public void saveAll(Iterable<Project> entities) {
+
+    }
 }

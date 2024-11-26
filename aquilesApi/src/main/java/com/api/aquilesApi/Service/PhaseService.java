@@ -30,8 +30,9 @@ public class PhaseService implements Idao<Phase, Long> {
 
     @Transactional
     @Override
-    public void save(Phase obje) {
+    public Phase save(Phase obje) {
         this.phaseRepository.save(obje);
+        return obje;
     }
 
     @Override

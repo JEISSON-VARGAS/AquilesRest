@@ -49,4 +49,9 @@ public class TwoAuthFactorService implements Idao<TwoAuthFactorEntity , Long> {
     public void create(TwoAuthFactorEntity entity) {
         this.twoAuthFactorRepository.save(entity);
     }
+
+    @Override
+    public void saveAll(Iterable<TwoAuthFactorEntity> entities) {
+
+    }
 }

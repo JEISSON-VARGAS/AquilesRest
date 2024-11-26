@@ -48,4 +48,9 @@ public class StateFollow_upsService implements Idao <StateFollow_upsEntity , Lon
     public void create(StateFollow_upsEntity entity) {
         this.stateFollowUpsRepository.save(entity);
     }
+
+    @Override
+    public void saveAll(Iterable<StateFollow_upsEntity> entities) {
+
+    }
 }

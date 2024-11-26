@@ -35,6 +35,11 @@ public class DocumentTypeService implements Idao<DocumentType, Long> {
         this.save(entity); // Llama a save para manejar la creación
     }
 
+    @Override
+    public void saveAll(Iterable<DocumentType> entities) {
+
+    }
+
     @Transactional
     @Override
     public void delete(DocumentType obje) {

@@ -55,4 +55,9 @@ public class TeamScrumService implements Idao<TeamScrum , Long> {
     public void create(TeamScrum entity) {
         this.teamsScrumRepository.save(entity);
     }
+
+    @Override
+    public void saveAll(Iterable<TeamScrum> entities) {
+
+    }
 }
