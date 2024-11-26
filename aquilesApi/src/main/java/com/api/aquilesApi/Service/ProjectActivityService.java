@@ -23,10 +23,15 @@ public class ProjectActivityService implements Idao<ProjectActivity, Long> {
                 new CustomException("La actividad de proyecto con id " + id + " no fue encontrada", HttpStatus.NO_CONTENT));
     }
 
-    @Transactional
     @Override
-    public void save(ProjectActivity obje) {
-        this.projectActivityRepository.save(obje);
+    public void update(ProjectActivity entity) {
+        // Implementar la lógica de actualización si es necesario
+    }
+
+    @Override
+    @Transactional
+    public ProjectActivity save(ProjectActivity entity) {
+        return this.projectActivityRepository.save(entity);  // Asegúrate de que el tipo de retorno coincida (ProjectActivity)
     }
 
     @Override
@@ -38,6 +43,11 @@ public class ProjectActivityService implements Idao<ProjectActivity, Long> {
     @Override
     public void delete(ProjectActivity obje) {
         this.projectActivityRepository.delete(obje);
+    }
+
+    @Override
+    public void create(ProjectActivity entity) {
+        // Lógica para crear una nueva actividad de proyecto, si es necesario.
     }
 
     @Override

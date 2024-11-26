@@ -21,7 +21,11 @@ public interface Idao<T, ID> {
 
     // Método para crear una nueva instancia de la entidad en la base de datos
     void create(T entity);
+
+    // Agregar método para guardar múltiples instancias
+    void saveAll(Iterable<T> entities);
 }
+
 
 
 

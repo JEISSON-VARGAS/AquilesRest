@@ -44,4 +44,9 @@ public class JuriesService implements Idao<Juries , Long> {
     public void create(Juries entity) {
         this.juriesRepository.save(entity);
     }
+
+    @Override
+    public void saveAll(Iterable<Juries> entities) {
+
+    }
 }

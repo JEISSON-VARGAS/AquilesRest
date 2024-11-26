@@ -19,42 +19,61 @@ public class LearningOutcomeService implements Idao<LearningOutcome, Long> {
 
     @Override
     public LearningOutcome getById(Long id) {
+        // Lanza una excepción personalizada si no se encuentra el objeto
         return learningOutcomeRepository.findById(id).orElseThrow(() ->
-                new CustomException("Learning Outcome with id " + id + " not found", HttpStatus.NO_CONTENT));
+                new CustomException("Learning Outcome con id " + id + " no encontrado", HttpStatus.NO_CONTENT));
+    }
+
+    @Override
+    public void update(LearningOutcome entity) {
+        // Implementación para actualizar entidad si es necesario
     }
 
     @Transactional
     @Override
-    public void save(LearningOutcome obj) {
+    public LearningOutcome save(LearningOutcome obj) {
+        // Guarda el objeto y lo devuelve (útil si tiene campos autogenerados)
         this.learningOutcomeRepository.save(obj);
+        return obj;
     }
 
     @Transactional
     @Override
     public void saveAll(Iterable<LearningOutcome> obj) {
+        // Guarda una colección de objetos
         this.learningOutcomeRepository.saveAll(obj);
     }
 
     @Transactional
     @Override
     public void delete(LearningOutcome obj) {
+        // Elimina el objeto de la base de datos
         this.learningOutcomeRepository.delete(obj);
     }
 
     @Override
+    public void create(LearningOutcome entity) {
+        // Implementación para crear entidad si es necesario
+    }
+
+    @Override
     public Page<LearningOutcome> findAll(PageRequest pageRequest) {
+        // Devuelve una lista paginada de objetos
         return learningOutcomeRepository.findAll(pageRequest);
     }
 
     public boolean existsCode(Long code) {
+        // Verifica si existe un LearningOutcome con el código dado
         return learningOutcomeRepository.existsByCode(code);
     }
 
     public boolean existsName(String name) {
+        // Verifica si existe un LearningOutcome con el nombre dado
         return learningOutcomeRepository.existsByName(name);
     }
 
     public boolean existsDescription(String description) {
+        // Verifica si existe un LearningOutcome con la descripción dada
         return learningOutcomeRepository.existsByDescription(description);
     }
 }

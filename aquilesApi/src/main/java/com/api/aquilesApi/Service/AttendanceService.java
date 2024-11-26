@@ -55,6 +55,11 @@ public class AttendanceService implements Idao<Attendance, Long> {
         this.attendanceRepository.save(entity);
     }
 
+    @Override
+    public void saveAll(Iterable<Attendance> entities) {
+
+    }
+
     public long countPresentByTrainerId(Long trainerId, Long presentStateId) {
         return attendanceRepository.countPresentByTrainerId(trainerId, presentStateId);
     }

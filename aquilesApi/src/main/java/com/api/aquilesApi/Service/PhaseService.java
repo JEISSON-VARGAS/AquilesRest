@@ -23,6 +23,11 @@ public class PhaseService implements Idao<Phase, Long> {
                 new CustomException("Phase with id " + id + " not found", HttpStatus.NO_CONTENT));
     }
 
+    @Override
+    public void update(Phase entity) {
+
+    }
+
     @Transactional
     @Override
     public void save(Phase obje) {
@@ -38,6 +43,11 @@ public class PhaseService implements Idao<Phase, Long> {
     @Override
     public void delete(Phase obje) {
         this.phaseRepository.delete(obje);
+    }
+
+    @Override
+    public void create(Phase entity) {
+
     }
 
     @Override

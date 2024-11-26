@@ -47,6 +47,11 @@ public class JustificationService implements Idao<Justification, Long> {
         this.justificationRepository.save(entity);
     }
 
+    @Override
+    public void saveAll(Iterable<Justification> entities) {
+
+    }
+
     public boolean existsByJustificationDocument(String justificationDocument) {
         return justificationRepository.existsByJustificationDocument(justificationDocument);
     }

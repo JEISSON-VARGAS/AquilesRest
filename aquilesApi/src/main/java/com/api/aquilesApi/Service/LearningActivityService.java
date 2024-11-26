@@ -30,15 +30,19 @@ public class LearningActivityService implements Idao<LearningActivity, Long> {
                 new CustomException("Learning Activity with id " + id + " not found", HttpStatus.NO_CONTENT));
     }
 
+    @Override
+    public void update(LearningActivity entity) {
+
+    }
+
     /**
      * Guarda una actividad de aprendizaje.
      *
      * @param obje La actividad de aprendizaje a guardar.
      */
-    @Transactional
     @Override
-    public void save(LearningActivity obje) {
-        this.learningActivityRepository.save(obje);
+    public LearningActivity save(LearningActivity obje) {
+        return this.learningActivityRepository.save(obje);
     }
 
     /**
@@ -60,6 +64,11 @@ public class LearningActivityService implements Idao<LearningActivity, Long> {
     @Override
     public void delete(LearningActivity obje) {
         this.learningActivityRepository.delete(obje);
+    }
+
+    @Override
+    public void create(LearningActivity entity) {
+
     }
 
     /**

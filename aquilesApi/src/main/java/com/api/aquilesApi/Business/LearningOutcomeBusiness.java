@@ -5,6 +5,7 @@ import com.api.aquilesApi.Repository.LearningOutcomeRepository;
 import com.api.aquilesApi.Service.LearningOutcomeService;
 import com.api.aquilesApi.Utilities.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;  // Aquí se agrega el import de HttpStatus
 import org.springframework.stereotype.Service;
 
 @Service

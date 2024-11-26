@@ -23,10 +23,15 @@ public class CompetenceService implements Idao<Competence, Long> {
                 new CustomException("Competence with id " + id + " not found", HttpStatus.NO_CONTENT));
     }
 
+    @Override
+    public void update(Competence entity) {
+        // Implementa la lógica de actualización
+    }
+
     @Transactional
     @Override
-    public void save(Competence obje) {
-        this.competenceRepository.save(obje);
+    public Competence save(Competence obje) {
+        return this.competenceRepository.save(obje);
     }
 
     @Transactional
@@ -39,6 +44,11 @@ public class CompetenceService implements Idao<Competence, Long> {
     @Override
     public void delete(Competence obje) {
         this.competenceRepository.delete(obje);
+    }
+
+    @Override
+    public void create(Competence entity) {
+        // Implementa la lógica de creación
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.api.aquilesApi.Controller;
 
 import com.api.aquilesApi.Business.LearningActivityBusiness;
 import com.api.aquilesApi.Dto.LearningActivityDTO;
-import com.api.aquilesApi.Utilities.response.ResponseHandler;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,68 +19,68 @@ public class LearningActivityController {
     private LearningActivityBusiness learningActivityBusiness;
 
     @GetMapping
-    public ResponseEntity<Object> getAll(
+    public ResponseEntity<?> getAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         try {
             Page<LearningActivityDTO> activities = learningActivityBusiness.findAll(page, size);
-            return ResponseHandler.generateResponse("Activities retrieved successfully", activities);
+            return ResponseEntity.ok(activities);
         } catch (Exception e) {
-            return ResponseHandler.generateErrorResponse(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getById(@PathVariable Long id) {
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         try {
             List<LearningActivityDTO> activity = learningActivityBusiness.findById(id);
-            return ResponseHandler.generateResponse("Activity retrieved successfully", activity);
+            return ResponseEntity.ok(activity);
         } catch (Exception e) {
-            return ResponseHandler.generateErrorResponse(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody LearningActivityDTO learningActivityDTO) {
+    public ResponseEntity<?> create(@Valid @RequestBody LearningActivityDTO learningActivityDTO) {
         try {
             Boolean result = learningActivityBusiness.add(learningActivityDTO);
             if (result) {
-                return ResponseHandler.generateResponse("Activity created successfully", null);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Activity created successfully");
             } else {
-                return ResponseHandler.generateErrorResponse("Failed to create activity");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create activity");
             }
         } catch (Exception e) {
-            return ResponseHandler.generateErrorResponse(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(
+    public ResponseEntity<?> update(
             @PathVariable Long id,
             @Valid @RequestBody LearningActivityDTO learningActivityDTO) {
         try {
             Boolean result = learningActivityBusiness.update(learningActivityDTO, id);
             if (result) {
-                return ResponseHandler.generateResponse("Activity updated successfully", null);
+                return ResponseEntity.ok("Activity updated successfully");
             } else {
-                return ResponseHandler.generateErrorResponse("Failed to update activity");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update activity");
             }
         } catch (Exception e) {
-            return ResponseHandler.generateErrorResponse(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
             Boolean result = learningActivityBusiness.delete(id);
             if (result) {
-                return ResponseHandler.generateResponse("Activity deleted successfully", null);
+                return ResponseEntity.ok("Activity deleted successfully");
             } else {
-                return ResponseHandler.generateErrorResponse("Failed to delete activity");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to delete activity");
             }
         } catch (Exception e) {
-            return ResponseHandler.generateErrorResponse(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

@@ -49,6 +49,11 @@ public class StateAttendanceService implements Idao<StateAttendance , Long> {
         this.stateAttendanceRepository.save(entity);
     }
 
+    @Override
+    public void saveAll(Iterable<StateAttendance> entities) {
+
+    }
+
     public boolean existsStateAttendance(Long stateAttendanceId) {
         return stateAttendanceRepository.existsByStateAttendanceId(stateAttendanceId);
     }

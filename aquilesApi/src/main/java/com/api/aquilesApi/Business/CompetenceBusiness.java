@@ -40,7 +40,7 @@ public class CompetenceBusiness {
     /**
      * Valida los datos de una competencia y asegura que no haya duplicados.
      */
-    private CompetenceDTO validateCompetence(Map<String, Object> json, CompetenceDTO competenceDTO) {
+    private CompetenceDTO validateCompetence(String operation, Map<String, Object> json, CompetenceDTO competenceDTO) {
         JSONObject dataObject = util.getData(json);
 
         competenceDTO.setCode(dataObject.getLong("code"));
@@ -51,18 +51,17 @@ public class CompetenceBusiness {
         PhaseDTO phaseDTO = new PhaseDTO();
         phaseDTO.setId(dataObject.getLong("phase"));
 
-        validateDuplicate("code", competenceDTO.getCode(), () -> competenceService.existsCode(competenceDTO.getCode()));
-        validateDuplicate("name", competenceDTO.getName(), () -> competenceService.existsName(competenceDTO.getName()));
-        validateDuplicate("description", competenceDTO.getDescription(), () -> competenceService.existsDescription(competenceDTO.getDescription()));
+        validateDuplicate(operation, "code", competenceDTO.getCode(), () -> competenceService.existsCode(competenceDTO.getCode()));
+        validateDuplicate(operation, "name", competenceDTO.getName(), () -> competenceService.existsName(competenceDTO.getName()));
+        validateDuplicate(operation, "description", competenceDTO.getDescription(), () -> competenceService.existsDescription(competenceDTO.getDescription()));
 
         return competenceDTO;
     }
 
-    private void validateDuplicate(String fieldName, Object value, BooleanCheck checkDuplicate) {
-        if (!"update".equals(methodName()) || !checkDuplicate.evaluate()) {
-            if (checkDuplicate.evaluate()) {
-                throw new CustomException("Duplicate " + fieldName + ": " + value, HttpStatus.BAD_REQUEST);
-            }
+    private void validateDuplicate(String operation, String fieldName, Object value, BooleanCheck checkDuplicate) {
+        // Solo verificar duplicados si la operación no es "update" o si ya existe el duplicado
+        if (!"update".equals(operation) && checkDuplicate.evaluate()) {
+            throw new CustomException("Duplicate " + fieldName + ": " + value, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -96,7 +95,7 @@ public class CompetenceBusiness {
     public void add(Map<String, Object> json) {
         try {
             CompetenceDTO competenceDTO = new CompetenceDTO();
-            Competence competence = modelMapper.map(validateCompetence(json, competenceDTO), Competence.class);
+            Competence competence = modelMapper.map(validateCompetence("add", json, competenceDTO), Competence.class);
             competenceService.save(competence);
         } catch (Exception e) {
             throw new CustomException("Error adding Competence: " + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -111,7 +110,7 @@ public class CompetenceBusiness {
             List<Competence> competences = new ArrayList<>();
             for (Map<String, Object> data : json) {
                 CompetenceDTO competenceDTO = new CompetenceDTO();
-                Competence competence = modelMapper.map(validateCompetence(data, competenceDTO), Competence.class);
+                Competence competence = modelMapper.map(validateCompetence("add", data, competenceDTO), Competence.class);
                 competences.add(competence);
             }
             competenceService.saveAll(competences);
@@ -126,7 +125,7 @@ public class CompetenceBusiness {
     public void update(Long id, Map<String, Object> json) {
         try {
             CompetenceDTO competenceDTO = modelMapper.map(competenceService.getById(id), CompetenceDTO.class);
-            Competence competence = modelMapper.map(validateCompetence(json, competenceDTO), Competence.class);
+            Competence competence = modelMapper.map(validateCompetence("update", json, competenceDTO), Competence.class);
             competenceService.save(competence);
         } catch (Exception e) {
             throw new CustomException("Error updating Competence: " + e.getMessage(), HttpStatus.BAD_REQUEST);

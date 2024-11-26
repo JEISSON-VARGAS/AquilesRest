@@ -54,6 +54,11 @@ public class Follow_upsService implements Idao<Follow_upsEntity , Long> {
         this.followUpsRepository.save(entity);
     }
 
+    @Override
+    public void saveAll(Iterable<Follow_upsEntity> entities) {
+
+    }
+
     // Método para buscar el estado por ID
     public StateFollow_upsEntity findStateById(Long stateFollowUpId) {
         return stateFollowUpsRepository.findById(stateFollowUpId)

@@ -45,4 +45,9 @@ public class DiarySustainationsService implements Idao<DiarySustainations, Long>
     public void create(DiarySustainations entity) {
         this.diarySustainationsRepository.save(entity);
     }
+
+    @Override
+    public void saveAll(Iterable<DiarySustainations> entities) {
+
+    }
 }
