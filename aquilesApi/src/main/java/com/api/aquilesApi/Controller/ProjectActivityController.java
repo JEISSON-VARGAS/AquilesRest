@@ -8,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,18 +24,18 @@ public class ProjectActivityController {
                                        @RequestParam(defaultValue = "10") int size) {
         Page<ProjectActivityDTO> projectActivityPage = projectActivityBusiness.findAll(page, size);
         if (!projectActivityPage.isEmpty()) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("activities", projectActivityPage.getContent());
-            response.put("currentPage", projectActivityPage.getNumber());
-            response.put("totalItems", projectActivityPage.getTotalElements());
-            response.put("totalPages", projectActivityPage.getTotalPages());
-            response.put("status", HttpStatus.OK);
-            return response;
+            return ResponseHttpApi.responseHttpFindAll(
+                    projectActivityPage.getContent(),
+                    ResponseHttpApi.CODE_OK,
+                    "Consulta exitosa",
+                    projectActivityPage.getTotalPages(),
+                    projectActivityPage.getNumber(),
+                    (int) projectActivityPage.getTotalElements()
+            );
         } else {
-            return ResponseHttpApi.responseHttpFind(
-                    "No hay actividades de proyecto disponibles",
-                    List.of(),
-                    HttpStatus.NOT_FOUND
+            return ResponseHttpApi.responseHttpAction(
+                    ResponseHttpApi.NO_CONTENT,
+                    "No hay actividades de proyecto disponibles"
             );
         }
     }
@@ -47,16 +45,15 @@ public class ProjectActivityController {
     public Map<String, Object> findById(@PathVariable Long id) {
         ProjectActivityDTO projectActivityDTO = projectActivityBusiness.findById(id);
         if (projectActivityDTO != null) {
-            return ResponseHttpApi.responseHttpFind(
-                    "Consulta exitosa",
-                    List.of(projectActivityDTO),
-                    HttpStatus.OK
+            return ResponseHttpApi.responseHttpFindId(
+                    projectActivityDTO,
+                    ResponseHttpApi.CODE_OK,
+                    "Consulta exitosa"
             );
         } else {
-            return ResponseHttpApi.responseHttpFind(
-                    "No se encontró la actividad de proyecto",
-                    List.of(),
-                    HttpStatus.NOT_FOUND
+            return ResponseHttpApi.responseHttpAction(
+                    ResponseHttpApi.NO_CONTENT,
+                    "No se encontró la actividad de proyecto"
             );
         }
     }
@@ -66,14 +63,15 @@ public class ProjectActivityController {
     public Map<String, Object> add(@RequestBody ProjectActivityDTO projectActivityDTO) {
         boolean isAdded = projectActivityBusiness.add(projectActivityDTO);
         if (isAdded) {
-            return ResponseHttpApi.responseHttpPost(
-                    "Actividad de proyecto añadida exitosamente",
-                    HttpStatus.CREATED
+            return ResponseHttpApi.responseHttpAction(
+                    ResponseHttpApi.CODE_OK,
+                    "Actividad de proyecto añadida exitosamente"
             );
         } else {
-            return ResponseHttpApi.responseHttpPost(
+            return ResponseHttpApi.responseHttpError(
                     "Error al añadir la actividad de proyecto",
-                    HttpStatus.BAD_REQUEST
+                    HttpStatus.BAD_REQUEST,
+                    null
             );
         }
     }
@@ -83,14 +81,15 @@ public class ProjectActivityController {
     public Map<String, Object> update(@PathVariable Long id, @RequestBody ProjectActivityDTO projectActivityDTO) {
         boolean isUpdated = projectActivityBusiness.update(id, projectActivityDTO);
         if (isUpdated) {
-            return ResponseHttpApi.responseHttpPut(
-                    "Actividad de proyecto actualizada exitosamente",
-                    HttpStatus.OK
+            return ResponseHttpApi.responseHttpAction(
+                    ResponseHttpApi.CODE_OK,
+                    "Actividad de proyecto actualizada exitosamente"
             );
         } else {
-            return ResponseHttpApi.responseHttpPut(
+            return ResponseHttpApi.responseHttpError(
                     "Error al actualizar la actividad de proyecto",
-                    HttpStatus.BAD_REQUEST
+                    HttpStatus.BAD_REQUEST,
+                    null
             );
         }
     }
@@ -100,14 +99,15 @@ public class ProjectActivityController {
     public Map<String, Object> delete(@PathVariable Long id) {
         boolean isDeleted = projectActivityBusiness.delete(id);
         if (isDeleted) {
-            return ResponseHttpApi.responseHttpDelete(
-                    "Actividad de proyecto eliminada exitosamente",
-                    HttpStatus.OK
+            return ResponseHttpApi.responseHttpAction(
+                    ResponseHttpApi.CODE_OK,
+                    "Actividad de proyecto eliminada exitosamente"
             );
         } else {
-            return ResponseHttpApi.responseHttpDelete(
+            return ResponseHttpApi.responseHttpError(
                     "Error al eliminar la actividad de proyecto",
-                    HttpStatus.BAD_REQUEST
+                    HttpStatus.BAD_REQUEST,
+                    null
             );
         }
     }

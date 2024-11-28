@@ -62,10 +62,11 @@ public class LearningOutcomeService implements Idao<LearningOutcome, Long> {
         return learningOutcomeRepository.findAll(pageRequest);
     }
 
-    public boolean existsCode(Long code) {
+    public boolean existsByCode(Long code) {
         // Verifica si existe un LearningOutcome con el código dado
         return learningOutcomeRepository.existsByCode(code);
     }
+
 
     public boolean existsName(String name) {
         // Verifica si existe un LearningOutcome con el nombre dado
@@ -79,6 +80,7 @@ public class LearningOutcomeService implements Idao<LearningOutcome, Long> {
 
     /**
      * Cambiar el estado activo/inactivo de un Learning Outcome.
+     *
      * @param id ID del Learning Outcome
      * @return El nuevo estado
      */
@@ -87,13 +89,13 @@ public class LearningOutcomeService implements Idao<LearningOutcome, Long> {
         // Obtiene el LearningOutcome
         LearningOutcome learningOutcome = this.getById(id);
 
-        // Cambia el estado
-        learningOutcome.setState(!learningOutcome.getState());
+        // Cambia el estado utilizando el método personalizado toggleState
+        learningOutcome.toggleState();
 
         // Guarda el cambio
         learningOutcomeRepository.save(learningOutcome);
 
         // Devuelve el nuevo estado
-        return learningOutcome.getState();
+        return learningOutcome.isActive();
     }
 }

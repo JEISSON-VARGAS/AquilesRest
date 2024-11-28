@@ -11,8 +11,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"learningOutcome", "learningActivities"})
-@ToString(exclude = {"learningOutcome", "learningActivities"})
+@EqualsAndHashCode(exclude = {"learningOutcome", "learningActivities", "trainingProject"})
+@ToString(exclude = {"learningOutcome", "learningActivities", "trainingProject"})
 @Entity
 @Builder
 @AllArgsConstructor
@@ -50,4 +50,9 @@ public class ProjectActivity implements Serializable {
 
     @OneToMany(mappedBy = "projectActivity", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<LearningActivity> learningActivities;
+
+    // Nueva relación con TrainingProject
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_training_project", nullable = false)
+    private TrainingProject trainingProject;  // Relación con TrainingProject
 }

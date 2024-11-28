@@ -1,12 +1,15 @@
 package com.api.aquilesApi.Business;
 
 import com.api.aquilesApi.Dto.ProjectActivityDTO;
-import com.api.aquilesApi.Entity.Phase;
+import com.api.aquilesApi.Dto.TrainingProjectDTO;  // Importa el DTO de TrainingProject
+import com.api.aquilesApi.Entity.LearningOutcome;
+import com.api.aquilesApi.Dto.LearningOutcomeDTO;
+import com.api.aquilesApi.Entity.ProjectActivity;
 import com.api.aquilesApi.Entity.TrainingProject;
-import com.api.aquilesApi.Utilities.CustomException;
-import com.api.aquilesApi.Service.PhaseService;
+import com.api.aquilesApi.Service.LearningOutcomeService;
 import com.api.aquilesApi.Service.ProjectActivityService;
 import com.api.aquilesApi.Service.TrainingProjectService;
+import com.api.aquilesApi.Utilities.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,17 +17,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class ProjectActivityBusiness {
 
     @Autowired
-    private ProjectActivityService projectActivitieService;
+    private ProjectActivityService projectActivityService;
 
     @Autowired
-    private PhaseService phaseService;
+    private LearningOutcomeService learningOutcomeService;
 
     @Autowired
     private TrainingProjectService trainingProjectService;
@@ -35,12 +35,12 @@ public class ProjectActivityBusiness {
     public Page<ProjectActivityDTO> findAll(int page, int size) {
         try {
             PageRequest pageRequest = PageRequest.of(page, size);
-            Page<ProjectActivityService> projectActivitiePage = projectActivitieService.findAll(pageRequest);
-            if (projectActivitiePage.isEmpty()) {
+            Page<ProjectActivity> projectActivityPage = projectActivityService.findAll(pageRequest);
+            if (projectActivityPage.isEmpty()) {
                 return Page.empty();
             }
-            return projectActivitiePage.map(
-                    projectActivitie -> modelMapper.map(projectActivitie, ProjectActivityDTO.class)
+            return projectActivityPage.map(
+                    projectActivity -> modelMapper.map(projectActivity, ProjectActivityDTO.class)
             );
         } catch (Exception e) {
             throw new CustomException("Error obteniendo actividades de proyecto", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,16 +48,14 @@ public class ProjectActivityBusiness {
     }
 
     // Buscar actividad por ID
-    public List<ProjectActivityDTO> findById(Long id) {
-        List<ProjectActivityDTO> projectActivityDTOList = new ArrayList<>();
+    public ProjectActivityDTO findById(Long id) {
         try {
-            ProjectActivityService projectActivitie = projectActivitieService.getById(id);
-            if (projectActivitie != null) {
-                projectActivityDTOList.add(modelMapper.map(projectActivitie, ProjectActivityDTO.class));
+            ProjectActivity projectActivity = projectActivityService.getById(id);
+            if (projectActivity != null) {
+                return modelMapper.map(projectActivity, ProjectActivityDTO.class);
             } else {
                 throw new CustomException("Actividad de proyecto no encontrada con ID: " + id, HttpStatus.NOT_FOUND);
             }
-            return projectActivityDTOList;
         } catch (Exception e) {
             throw new CustomException("Error buscando actividad de proyecto", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -66,14 +64,15 @@ public class ProjectActivityBusiness {
     // Agregar nueva actividad de proyecto
     public Boolean add(ProjectActivityDTO projectActivityDTO) {
         try {
-            ProjectActivityService projectActivitie = modelMapper.map(projectActivityDTO, ProjectActivityService.class);
+            ProjectActivity projectActivity = modelMapper.map(projectActivityDTO, ProjectActivity.class);
 
-            Phase phase = phaseService.getById(projectActivitie.getPhase().getId());
-            TrainingProject trainingProject = trainingProjectService.getById(projectActivitie.getTrainingProjects().getId());
+            LearningOutcome learningOutcome = learningOutcomeService.getById(projectActivityDTO.getLearningOutcome().getId());
+            TrainingProject trainingProject = trainingProjectService.getById(projectActivityDTO.getTrainingProjects().getId());
 
-            projectActivitie.setPhase(phase);
-            projectActivitie.setTrainingProjects(trainingProject);
-            projectActivitieService.save(projectActivitie);
+            projectActivity.setLearningOutcome(learningOutcome);  // Establecer LearningOutcome
+            projectActivity.setTrainingProject(trainingProject);  // Establecer el TrainingProject
+
+            projectActivityService.save(projectActivity);
 
             return true;
         } catch (Exception e) {
@@ -84,19 +83,20 @@ public class ProjectActivityBusiness {
     // Actualizar actividad de proyecto
     public Boolean update(Long id, ProjectActivityDTO projectActivityDTO) {
         try {
-            ProjectActivityService projectActivitie = projectActivitieService.getById(id);
-            if (projectActivitie == null) {
+            ProjectActivity projectActivity = projectActivityService.getById(id);
+            if (projectActivity == null) {
                 throw new CustomException("Actividad de proyecto no encontrada con ID: " + id, HttpStatus.NOT_FOUND);
             }
 
-            Phase phase = phaseService.getById(projectActivityDTO.getPhase().getId());
+            LearningOutcome learningOutcome = learningOutcomeService.getById(projectActivityDTO.getLearningOutcome().getId());
             TrainingProject trainingProject = trainingProjectService.getById(projectActivityDTO.getTrainingProjects().getId());
 
-            projectActivityDTO.setPhase(modelMapper.map(phase, ProjectActivityDTO.PhaseDTO.class));
-            projectActivityDTO.setTrainingProjects(modelMapper.map(trainingProject, ProjectActivityDTO.TrainingProjectDTO.class));
+            // Mapeo de los objetos TrainingProject y LearningOutcome a sus DTOs correspondientes
+            projectActivityDTO.setLearningOutcome(modelMapper.map(learningOutcome, LearningOutcomeDTO.class));
+            projectActivityDTO.setTrainingProjects(modelMapper.map(trainingProject, TrainingProjectDTO.class)); // Aquí está el cambio
 
-            modelMapper.map(projectActivityDTO, projectActivitie);
-            projectActivitieService.save(projectActivitie);
+            modelMapper.map(projectActivityDTO, projectActivity);
+            projectActivityService.save(projectActivity);
 
             return true;
         } catch (Exception e) {
@@ -107,14 +107,17 @@ public class ProjectActivityBusiness {
     // Eliminar actividad de proyecto
     public Boolean delete(Long id) {
         try {
-            ProjectActivityService projectActivitie = projectActivitieService.getById(id);
-            if (projectActivitie == null || projectActivitie.getName() == null) {
+            ProjectActivity projectActivity = projectActivityService.getById(id);
+            if (projectActivity == null || projectActivity.getName() == null) {
                 throw new CustomException("Actividad de proyecto no encontrada con ID: " + id, HttpStatus.NOT_FOUND);
             }
-            projectActivitieService.delete(id);
+
+            // Aquí pasas el objeto projectActivity en lugar de solo el ID
+            projectActivityService.delete(projectActivity);
             return true;
         } catch (Exception e) {
             throw new CustomException("Error eliminando actividad de proyecto", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

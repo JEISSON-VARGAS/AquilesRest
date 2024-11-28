@@ -1,6 +1,5 @@
 package com.api.aquilesApi.Dto;
 
-
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -30,4 +29,7 @@ public class ProjectActivityDTO {
     // Relaciones
     @NotNull(message = "El resultado de aprendizaje es obligatorio")
     private LearningOutcomeDTO learningOutcome;
+
+    @NotNull(message = "El proyecto de formación es obligatorio")
+    private TrainingProjectDTO trainingProjects;  // Aquí agregas el campo para TrainingProject
 }
