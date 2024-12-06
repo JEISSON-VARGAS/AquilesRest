@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Entidad para representar los resultados de aprendizaje (Learning Outcomes).
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {"competence", "projectActivities"})
@@ -34,7 +37,7 @@ public class LearningOutcome implements Serializable {
     private String description;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean state;
+    private Boolean active; // Renombrado de 'state' a 'active' para mayor claridad.
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -53,4 +56,21 @@ public class LearningOutcome implements Serializable {
 
     @OneToMany(mappedBy = "learningOutcome")
     private List<ProjectActivity> projectActivities;
+
+    /**
+     * Método para alternar el estado de 'active'.
+     * Cambia entre true (activo) y false (inactivo).
+     */
+    public void toggleState() {
+        this.active = !this.active;
+    }
+
+    /**
+     * Método utilitario para verificar si el Learning Outcome está activo.
+     *
+     * @return true si está activo, false si no.
+     */
+    public boolean isActive() {
+        return Boolean.TRUE.equals(this.active);
+    }
 }

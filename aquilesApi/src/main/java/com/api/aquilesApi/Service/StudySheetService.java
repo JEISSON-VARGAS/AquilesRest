@@ -35,6 +35,11 @@ public class StudySheetService implements Idao<StudySheet, Long> {
         this.save(entity); // Llama a save para manejar la creación
     }
 
+    @Override
+    public void saveAll(Iterable<StudySheet> entities) {
+
+    }
+
     @Transactional
     @Override
     public void update(StudySheet entity) {

@@ -36,6 +36,11 @@ public class StudentService implements Idao<Student, Long> {
         this.save(entity); // Llama a save para manejar la creación
     }
 
+    @Override
+    public void saveAll(Iterable<Student> entities) {
+
+    }
+
     @Transactional
     @Override
     public void delete(Student obje) {

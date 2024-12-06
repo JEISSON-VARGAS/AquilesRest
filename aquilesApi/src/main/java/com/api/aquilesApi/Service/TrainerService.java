@@ -54,4 +54,9 @@ public class TrainerService implements Idao<Trainer , Long> {
     public void create(Trainer entity) {
         this.trainersRepository.save(entity);
     }
+
+    @Override
+    public void saveAll(Iterable<Trainer> entities) {
+
+    }
 }

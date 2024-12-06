@@ -46,4 +46,9 @@ public class ChecklistSubstantiationListService implements Idao<ChecklistSubstan
     public void create(ChecklistSubstantiationList entity) {
         checklistSubstantiationListRepository.save(entity);
     }
+
+    @Override
+    public void saveAll(Iterable<ChecklistSubstantiationList> entities) {
+
+    }
 }
